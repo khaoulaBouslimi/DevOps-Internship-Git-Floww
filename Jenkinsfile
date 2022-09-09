@@ -1,5 +1,10 @@
 pipeline {
-    stage{
+    agent{
+        docker{
+            image 'maven'
+            args '-v $ C:\Program Files\apache-maven-3.8.2-bin\apache-maven-3.8.2\bin'
+        }
+    stages{
         stage('Quality Gate Status Check'){
             script{
                 withSonarQubeEnv('SonarQube'){
