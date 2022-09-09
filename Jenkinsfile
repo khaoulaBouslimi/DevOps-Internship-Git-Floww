@@ -1,36 +1,27 @@
 pipeline {
-    
-    agent{
-            docker{
-                image 'maven'
-                args '-v $C:/Program Files/apache-maven-3.8.2-bin/apache-maven-3.8.2/bin'
-                  }
-          }
-    
-    
-    stages{
-        
-        stage('Quality Gate Status Check'){
-
-            steps{
-                script{
-
-                    withSonarQubeEnv('SonarQube'){
-                        bat "mvn sonar:sonar"
-                    }
-
-                    timeout(time=1, unit:'HOURS'){
-
-                        def qg =waitForQualityGate()
-                        if (qg.Status != ok){
-                            error"Pipeline aborted Due to quality gate failure : ${qg.status}"
-                        }
-                    }
-
-                    bat "mvn clean install"
-                }
+    agent any
+    stages {
+        stage('git repo & clean') {
+            steps {
+               
+                bat "git clone https://github.com/khaoulaBouslimi/DevOps-Internship-Git-Floww.git"
+                bat "mvn clean -f DevOps-Internship-Git-Floww"
             }
-            
+        }
+        stage('install') {
+            steps {
+                bat "mvn install -f DevOps-Internship-Git-Floww"
+            }
+        }
+        stage('test') {
+            steps {
+                bat "mvn test -f DevOps-Internship-Git-Floww"
+            }
+        }
+        stage('package') {
+            steps {
+                bat "mvn package -f DevOps-Internship-Git-Floww"
+            }
         }
     }
 }
