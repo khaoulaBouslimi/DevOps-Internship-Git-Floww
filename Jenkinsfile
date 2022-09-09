@@ -1,26 +1,74 @@
-
-node
-{
-    stage('clonning from GIT')
-    {
-git branch: 'master', credentialsId: 'newone',  url: 'https://github.com/khaoulaBouslimi/DevOps-Internship-Git-Floww.git'
-
+pipeline{
+    agent any
+    tools{
+        maven "mvn"
     }
-    
-    stage('SonarQube Analysis') {
-       
-    def scannerHome = tool 'SonarQube'
-      withSonarQubeEnv('SonarQube') {
-     -D sonar.projectVersion=0.0.1-SNAPSHOT \
-       -D sonar.login=admin \
-      -D sonar.password=-469GxqQSz7.fs. \
-      -D sonar.projectBaseDir=C:/ProgramData/Jenkins/.jenkins/workspace/SonarQube-internship \
-        -D sonar.projectKey=com.example \
-        -D sonar.sourceEncoding=UTF-8 \
-        -D sonar.language=java \
-        -D sonar.sources=DevOps-Internship-Git-Floww/src/main \
-        -D sonar.tests=DevOps-Internship-Git-Floww/src/test \
-        -D sonar.host.url=http://196.234.224.13:9000/"""
+  
+
+    stages{
+        stage('BUILD'){
+            steps {
+                bat 'mvn clean install -DskipTests'
+            }
+            post{
+                success{
+                    echo 'Now Archiving...'
+                    archiveArtifacts artifacts: "**/target/*.war"
+                }
+            }
         }
-}
+
+        stage('UNIT test'){
+            steps{
+                bat 'mvn test'
+            }
+        }
+
+        stage('INTEGRATION test'){
+            steps{
+                bat 'mvn verify -DskipUnitTests'
+            }
+        }
+
+        stage('CODE ANALYSIS with CHECKSTYLE'){
+            steps{
+                bat 'mvn checkstyle:checkstyle'
+            }
+            post{
+                success{
+                    echo 'Generated analysis result'
+                }
+            }
+        }
+
+        stage('Code Analysis with SONARQUBE') {
+            environment{
+                scannerHome = tool 'SonarQube'
+
+            }
+            steps{
+                
+                withSonarQubeEnv(credentialsId: 'joujou',installationName: 'SonarQube') {
+                    withCredentials([string(credentialsId: 'joujou', variable: 'joujou')]) {
+                        bat '''
+                            mvn sonar:sonar \
+                            -Dsonar.projectKey=DevOps-Internship-Git-Floww \
+                            -Dsonar.host.url=http://102.159.202.139:9000 \
+                            -Dsonar.login=-469GxqQSz7.fs.
+                            '''
+
+                    } 
+                    
+                }
+
+            }
+            
+        }
+
+        
+
+
+
+        
+    }
 }
