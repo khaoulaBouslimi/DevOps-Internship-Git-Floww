@@ -11,7 +11,6 @@ git branch: 'master', credentialsId: 'newone',  url: 'https://github.com/khaoula
        
     def scannerHome = tool 'SonarQube'
       withSonarQubeEnv('SonarQube') {
-       bat """ \
      -D sonar.projectVersion=0.0.1-SNAPSHOT \
        -D sonar.login=admin \
       -D sonar.password=-469GxqQSz7.fs. \
