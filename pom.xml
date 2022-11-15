@@ -120,6 +120,15 @@
         
 	</dependencies>
 	
+		<!-- Deploy to Nexus -->
+	<distributionManagement>
+		<repository>
+			<id>deploymentRepo</id>
+			<name>Nexus Repository</name>
+			<url>http://192.168.1.20:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
+	
 	
 	<settings>
 	    <pluginGroups>
@@ -143,6 +152,11 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
