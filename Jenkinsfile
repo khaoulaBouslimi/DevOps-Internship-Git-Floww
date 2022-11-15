@@ -69,7 +69,7 @@
   
         stage('Docker image'){
             steps {
-                 sh 'docker build -t khoukha/devopsInternship .'
+                 sh 'docker build -t khoukha/devopsinternship .'
             }
         }
 
@@ -77,7 +77,7 @@
             steps {
                 withCredentials([string(credentialsId: 'dockerhubId', variable: 'dockerhubpwd')]) {
                     sh 'docker login -u khoukha -p ${dockerhubpwd}'
-                    sh 'docker push khoukha/devopsInternship'
+                    sh 'docker push khoukha/devopsinternship'
                 }
             }
         }   
