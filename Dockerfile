@@ -1,7 +1,7 @@
-FROM openjdk:11
-ADD target/p2a.jar p2a.jar
-#EXPOSE 8080
-ENTRYPOINT ["java","-jar","/p2a.jar"]
+FROM openjdk
+ADD target/Women-1.0.jar/ Women-1.0.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar","/Women-1.0.jar"]
 
 #FROM maven:3.8.2-jdk-11
 
