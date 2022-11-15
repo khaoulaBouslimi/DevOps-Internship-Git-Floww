@@ -8,7 +8,7 @@
         stage('Cloning from GitHub') {
             steps {
                 echo "Getting Project from GitHub";
-                git branch: 'khaoula', credentialsId: 'MyGitHubCredential', url: 'https://github.com/khaoulaBouslimi/DevOps-Internship-Git-Floww.git'
+                git branch: 'master', credentialsId: 'GitFlowCredential', url: 'https://github.com/khaoulaBouslimi/DevOps-Internship-Git-Floww.git'
             }
         }
     
